@@ -20,4 +20,17 @@ class Beer
     self.class.all << self
   end
 
+  def scrape_beers
+    doc = Nokogiri::HTML(open("https://www.beeradvocate.com/lists/top/"))
+    ratings = doc.search("td span:first-child")
+    ratings = ratings.map do |r|
+      r.text
+    end
+    ratings.delete_at(0)
+    names = doc.search("td a b")
+    names = names.map do |n|
+      n.text
+    end
+  end
+
 end
