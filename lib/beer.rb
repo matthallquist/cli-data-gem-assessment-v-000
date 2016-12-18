@@ -20,7 +20,7 @@ class Beer
     self.class.all << self
   end
 
-  def scrape_beers
+  def self.scrape_beers
     doc = Nokogiri::HTML(open("https://www.beeradvocate.com/lists/top/"))
     ratings = doc.search("td span:first-child")
     ratings = ratings.map do |r|
@@ -39,6 +39,25 @@ class Beer
     types = types.map do |t|
       t.text
     end
+    abvs = doc.search("#extendedInfo:last-of-type")
+    abvs = abvs.map do |abv|
+      a = abv.text.split(" / ").last
+      a = a.split(" ABV")
+      a = a[0]
+    end
+    creation_array = []
+    count = 0
+    250.times do
+      array = []
+      array << ratings[count]
+      array << names[count]
+      array << brewers[count]
+      array << types[count]
+      array << abvs[count]
+      creation_array << array
+      count += 1
+    end
+    creation_array
   end
 
 end
