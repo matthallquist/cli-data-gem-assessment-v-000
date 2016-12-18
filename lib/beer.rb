@@ -31,8 +31,8 @@ class Beer
     names = names.map do |n|
       n.text
     end
-    brewers = doc.search("#extendedInfo a:first-child")
-    brewers = brewers.map do |b|
+    breweries = doc.search("#extendedInfo a:first-child")
+    breweries = breweries.map do |b|
       b.text
     end
     types = doc.search("#extendedInfo a:last-child")
@@ -51,13 +51,23 @@ class Beer
       array = []
       array << ratings[count]
       array << names[count]
-      array << brewers[count]
+      array << breweries[count]
       array << types[count]
       array << abvs[count]
       creation_array << array
       count += 1
     end
     creation_array
+  end
+
+  def self.create_beers
+    array = self.scrape_beers
+    array.each do |stats|
+      new_brewery = Brewery.find_or_create(stats[2])
+      new_beer = Beer.new(stats[0],stats[1],new_brewery,stats[3],stats[4])
+      new_beer.brewery.beers << [new_beer]
+    end
+    binding.pry
   end
 
 end

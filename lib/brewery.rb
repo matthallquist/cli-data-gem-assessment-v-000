@@ -9,6 +9,10 @@ class Brewery
     save
   end
 
+  def beers
+    @beers
+  end
+
   def self.all
     @@all
   end
@@ -20,7 +24,7 @@ class Brewery
   def self.find_or_create(brewer)
     exists = self.all.detect{|b| b.name == brewer}
     if exists == nil
-      brew = Brewer.new(brewer)
+      brew = Brewery.new(brewer)
     else
       exists
     end
