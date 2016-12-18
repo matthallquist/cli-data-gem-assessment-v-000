@@ -31,6 +31,14 @@ class Beer
     names = names.map do |n|
       n.text
     end
+    brewers = doc.search("#extendedInfo a:first-child")
+    brewers = brewers.map do |b|
+      b.text
+    end
+    types = doc.search("#extendedInfo a:last-child")
+    types = types.map do |t|
+      t.text
+    end
   end
 
 end
