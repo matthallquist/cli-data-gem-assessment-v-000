@@ -17,4 +17,13 @@ class Brewery
     self.class.all << self
   end
 
+  def self.find_or_create(brewer)
+    exists = self.all.detect{|b| b.name == brewer}
+    if exists == nil
+      brew = Brewer.new(brewer)
+    else
+      exists
+    end
+  end
+
 end
